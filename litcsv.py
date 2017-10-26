@@ -25,7 +25,7 @@ with open('invent.csv', newline='') as csvfile:
                 stock[code[0]].append([num_lot,quant_dispo,date_exp,quant_reel])
             else :
                 stock[code[0]] = [[num_lot,quant_dispo,date_exp,quant_reel]]
-
+print(stock)
 for key in stock :
     squant_dispo = 0
     squant_reel = 0
@@ -35,7 +35,7 @@ for key in stock :
         squant_reel += float(value[3])
         lots.append(value)
     stock_xml.append([key,squant_dispo,squant_reel,lots])
-
+print(stock_xml)
 eExact = etree.Element('eExact')
 StockCounts = etree.SubElement(eExact,'StockCounts')
 StockCount = etree.SubElement(StockCounts,'StockCount')
@@ -56,11 +56,10 @@ for line in stock_xml :
         BatchNumberLine = etree.SubElement(BatchNumbers,'BatchNumberLine')
         BatchNumberLine.set('Quantity',str(lot[3]))
         BatchNumber = etree.SubElement(BatchNumberLine,'BatchNumber')
-        BatchNumber.set('BatchNumber',lot[0])
+        BatchNumber.set('BatchNumber',str(lot[0]))
         BatchNumber.set('ExpiryDate',lot[2])
     j += 1
 
 with open('stock.xml','w') as fichier:
-    fichier.write('<?xml version="1.0" encoding="UTF_8"?>\n')
-    fichier.write(etree.tostring(eExact,pretty_print=True).decode('utf_8'))
-
+    fichier.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+    fichier.write(etree.tostring(eExact,pretty_print=True,encoding='utf-8').decode('utf_8'))
